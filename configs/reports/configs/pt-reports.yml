@@ -1021,7 +1021,16 @@ ReportDefinitions:
     label: reports.pt.updatedprops
     type: string
     source: pt
-    total: true 
+    total: true
+  searchParams:
+  - name: ulb
+    label: ULB
+    type: singlevaluelist
+    pattern: http://egov-mdms-service:8080/egov-mdms-service/v1/_get?tenantId=$tenantid&moduleName=tenant&masterName=tenants|$.MdmsRes.tenant.tenants.*.code|$.MdmsRes.tenant.tenants.*.name
+    source: pt
+    wrapper: true
+    isMandatory: false
+    searchClause: AND pt.tenantid = $ulb
   query: |
     SELECT
     initcap(split_part(pt.tenantid, '.', 2)) as tenantId,
