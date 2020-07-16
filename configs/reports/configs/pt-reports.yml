@@ -1037,7 +1037,7 @@ ReportDefinitions:
     count(*) as totalmigratedproperties,
     SUM(case when ptd.additionaldetails ->>'is_migrated' = 'true' then 1 else 0 end) as migration,
     (count(*)-SUM(case when ptd.additionaldetails ->>'is_migrated' = 'true' then 1 else 0 end)) as dataentry,
-    SUM(case when ptd.createdtime > ptd.lastmodifiedtime then 1 else 0 end) updatedprops
+    SUM(case when ptd.additionaldetails ->>'is_migrated' = 'true' and ptd.createdtime > ptd.lastmodifiedtime then 1 else 0 end) updatedprops
     FROM eg_pt_property_v2 as pt
     JOIN (SELECT DISTINCT ON (property) *  FROM eg_pt_propertydetail_v2 order by property, lastmodifiedtime desc) as ptd on ptd.property=pt.propertyid where ptd.source = 'LEGACY_RECORD' and pt.tenantid != 'uk.testing'
   groupby: GROUP BY pt.tenantid
